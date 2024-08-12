@@ -19,7 +19,7 @@ const books = Vue.createApp ({
         search: ({target:{value:v}}) => books.fetch(v && '&$search='+v),
 
         async fetch (etc='') {
-            const {data} = await GET(`/Books?$expand=genre,currency${etc}`)
+            const {data} = await GET(`/ListOfBooks?$expand=genre,currency${etc}`)
             books.list = data.value
         },
 
@@ -49,12 +49,12 @@ const books = Vue.createApp ({
             } catch (err) { books.user = { id: err.message } }
         },
 
-        // async getUserInfo() {
-            // try {
-            //     const { data:user } = await axios.get('/user/me')
-            //     if (user.id !== 'anonymous') books.user = user
-            // } catch (err) { books.user = { id: err.message } }
-        // },
+        async getUserInfo() {
+            try {
+                const { data:user } = await axios.get('/user/me')
+                if (user.id !== 'anonymous') books.user = user
+            } catch (err) { books.user = { id: err.message } }
+        },
     }
 }).mount('#app')
 
